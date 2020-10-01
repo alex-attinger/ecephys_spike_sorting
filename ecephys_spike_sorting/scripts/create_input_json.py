@@ -42,15 +42,15 @@ def createInputJson(output_file,
                     ):
 
     # hard coded paths to code on your computer and system
-    ecephys_directory = r'D:\ecephys_fork\ecephys_spike_sorting\ecephys_spike_sorting'
-    kilosort_repository = r'C:\Users\labadmin\Documents\jic\KS2_MP_052120\Kilosort2'
-    npy_matlab_repository = r'C:\Users\labadmin\Documents\jic\npy-matlab-master'
-    catGTPath = r'C:\Users\labadmin\Documents\jic\CatGT'
-    tPrime_path=r'C:\Users\labadmin\Documents\jic\TPrimeApp\TPrime'
-    cWaves_path=r'C:\Users\labadmin\Documents\jic\C_Waves'
+    ecephys_directory = r'C:\Users\giocomolab\ecephys_spike_sorting\ecephys_spike_sorting'
+    kilosort_repository = r'C:\code\Kilosort2Dev'
+    npy_matlab_repository = r'C:\code\npy-matlab'
+    catGTPath = r'C:\Users\giocomolab\Desktop\SpikeGLX\CatGT'
+    tPrime_path=r'C:\Users\giocomolab\Desktop\SpikeGLX\TPrime'
+    cWaves_path=r'C:\Users\giocomolab\Desktop\SpikeGLX\C_Waves'
     
     # for config files and kilosort working space
-    kilosort_output_tmp = r'D:\kilosort_datatemp' 
+    kilosort_output_tmp = r'C:\temp' 
     
     
     # derived directory names
