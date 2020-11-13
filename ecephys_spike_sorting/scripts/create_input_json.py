@@ -18,6 +18,7 @@ def create_samba_directory(samba_server, samba_share):
 def createInputJson(output_file, 
                     npx_directory=None, 
                     continuous_file = None,
+                    lfp_band_file = '',
                     spikeGLX_data=True,
                     extracted_data_directory=None,
                     kilosort_output_directory=None,
@@ -31,6 +32,7 @@ def createInputJson(output_file,
                     catGT_cmd_string = '-prb_fld -out_prb_fld -aphipass=300 -gbldmx -gfix=0.40,0.10,0.02',
                     catGT_gfix_edits = 0,
                     noise_template_use_rf = True,
+                    cluster_group_file_name = 'classifier_cluster.txt',
                     event_ex_param_str = 'XD=4,1,50',
                     sync_period = 1.0,
                     toStream_sync_params = 'SY=0,384,6,500',
@@ -41,7 +43,9 @@ def createInputJson(output_file,
                     whiteningRange = 32,
                     CSBseed = 1,
                     LTseed = 1,
-                    nNeighbors = 32
+                    nNeighbors = 32,
+                    Th = '[10 4]',
+                    ThPre = 8,
                     ):
 
     # hard coded paths to code on your computer and system
@@ -188,9 +192,9 @@ def createInputJson(output_file,
             "reference_channels" : reference_channels,
             "vertical_site_spacing" : 10e-6,
             "ap_band_file" : continuous_file,
-            "lfp_band_file" : os.path.join(extracted_data_directory, 'continuous', 'Neuropix-' + acq_system + '-100.1', 'continuous.dat'),
+            "lfp_band_file" :lfp_band_file,
             "reorder_lfp_channels" : True,
-            "cluster_group_file_name" : 'cluster_group.tsv'
+            "cluster_group_file_name" : cluster_group_file_name
         }, 
 
         "extract_from_npx_params" : {
@@ -241,13 +245,13 @@ def createInputJson(output_file,
                 "chanMap" : "'chanMap.mat'",
                 "fshigh" : 150,
                 "minfr_goodchannels" : minfr_goodchannels,
-                "Th" : '[10 4]',
+                "Th" : Th, # 10 4
                 "lam" : 10,
                 "AUCsplit" : 0.9,
                 "minFR" : 1/50.,
                 "momentum" : '[20 400]',
                 "sigmaMask" : 30,
-                "ThPre" : 8,
+                "ThPre" : ThPre, #8
                 "gain" : uVPerBit,
                 "CSBseed" : CSBseed,
                 "LTseed" : LTseed,
@@ -282,7 +286,8 @@ def createInputJson(output_file,
         "noise_waveform_params" : {
             "classifier_path" : os.path.join(modules_directory, 'noise_templates', 'rf_classifier.pkl'),
             "multiprocessing_worker_count" : 10,
-            "use_random_forest" : noise_template_use_rf
+            "use_random_forest" : noise_template_use_rf,
+            "use_preclustered" : False
         },
 
         "quality_metrics_params" : {
