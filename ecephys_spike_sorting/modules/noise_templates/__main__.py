@@ -21,15 +21,28 @@ def classify_noise_templates(args):
             load_kilosort_data(args['directories']['kilosort_output_directory'], \
                 args['ephys_params']['sample_rate'], \
                 convert_to_seconds = True)
-
+    print('arg: {}'.format(args['noise_waveform_params']['use_random_forest']))
     if args['noise_waveform_params']['use_random_forest']:
         # use random forest classifier
         cluster_ids, is_noise = id_noise_templates_rf(spike_times, spike_clusters, \
                     cluster_ids, templates, args['noise_waveform_params'])
     else:
         # use heuristics to identify templates that look like noise
-        cluster_ids, is_noise = id_noise_templates(cluster_ids, templates, np.squeeze(channel_map), \
-            args['noise_waveform_params'])
+        if args['noise_waveform_params']['use_preclustered']:
+            cluster_ids, is_noise = id_noise_templates(cluster_ids, templates, np.squeeze(channel_map), \
+                                args['noise_waveform_params'])
+        else:
+            try:
+                cluster_ids = np.unique(spike_clusters)
+                cluster_ids, is_noise = id_noise_templates(cluster_ids, templates, np.squeeze(channel_map), \
+                                    args['noise_waveform_params'])
+            except:
+                print('using templates')
+                cluster_ids = np.unique(spike_templates)
+                cluster_ids, is_noise = id_noise_templates(cluster_ids, templates, np.squeeze(channel_map), \
+                                args['noise_waveform_params'])
+
+
 
     mapping = {False: 'good', True: 'noise'}
     labels = [mapping[value] for value in is_noise]
