@@ -6,7 +6,8 @@ import numpy as np
 from helpers import SpikeGLX_utils
 from helpers import log_from_json
 from create_input_json import createInputJson
-
+# cd C:\Users\giocomolab\ecephys_spike_sorting\ecephys_spike_sorting>
+# pipenv run python -m scripts\spikeGLX_pipeline.py
 # script to run CatGT, KS2, postprocessing and TPrime on data collected using
 # SpikeGLX. The construction of the paths assumes data was saved with
 # "Folder per probe" selected (probes stored in separate folders) AND
@@ -27,7 +28,7 @@ logName = 'log.csv'
 
 # Raw data directory = npx_directory
 # run_specs = name, gate, trigger and probes to process
-npx_directory = r'Z:\giocomo\export\data\Projects\AlexA_NP\process'
+npx_directory = r'Z:\giocomo\export\data\Projects\AlexA_NP\AA_200920_5'
 
 # Each run_spec is a list of 4 strings:
 #   undecorated run name (no g/t specifier, the run field in CatGT)
@@ -38,10 +39,13 @@ npx_directory = r'Z:\giocomo\export\data\Projects\AlexA_NP\process'
 #   probes to process, as a string, e.g. '0', '0,3', '0:3'
 
 run_specs = [										
-						#['AA_200528_1_0625_spatial_1', '0', '0,0', '0'],
-                        #['AA_200528_1_0626_spatial_1', '0', '0,0', '0'],
+						#['AA_200920_5_201010_mismatch_1', '0', '0,0', '0'],
+                        #['AA_200920_5_201011_mismatch_2', '0', '0,0', '0'],
+                        #['AA_200920_5_201012_mismatch_3', '0', '0,0', '0'],
+                        ['AA_200920_5_201018_mismatch_6', '0', '0,0', '0'],
+                        ['AA_200920_5_201019_mismatch_7', '0', '0,0', '0'],
                         #['AA_200528_2_0625_spatial_1', '0', '0,0', '0'],
-                        ['AA_200528_2_0626_spatial_1', '0', '0,0', '0']
+                        #['AA_200528_2_0626_spatial_1', '0', '0,0', '0']
 ]
 
 # ------------------
@@ -64,7 +68,7 @@ catGT_stream_string = '-ap -ni'
 # Note 1: directory naming in this script requires -prb_fld and -out_prb_fld
 # Note 2: this command line includes specification of edge extraction
 # see CatGT readme for details
-catGT_cmd_string = '-prb_fld -out_prb_fld -aphipass=300 -aplopass=9000 -gbldmx -gfix=0,0.10,0.02 -SY=0,384,6,500 -SY=1,384,6,500 -XA=0,1,3,500 -XA=1,3,3,0 -XD=4,1,50 -XD=4,2,1.7 -XD=4,3,5'
+catGT_cmd_string = '-prb_fld -out_prb_fld -aphipass=300 -aplopass=9000 -gbldmx -gfix=0,0.10,0.02 -SY=0,384,6,500 -SY=1,384,6,500 -XA=0,1,3,500'
 
 # ----------------------
 # psth_events parameters
@@ -217,7 +221,7 @@ for spec in run_specs:
                                        spikeGLX_data = True,
 									   kilosort_output_directory=kilosort_output_dir,
                                        ks_make_copy = ks_make_copy,
-                                       noise_template_use_rf = False,
+                                       noise_template_use_rf = True,
                                        catGT_run_name = session_id,
                                        gate_string = spec[1],
                                        trigger_string = trigger_str,
@@ -226,8 +230,12 @@ for spec in run_specs:
                                        catGT_cmd_string = catGT_cmd_string,
                                        catGT_gfix_edits = gfix_edits[i],
                                        extracted_data_directory = catGT_dest,
-                                       event_ex_param_str = event_ex_param_str
+                                       event_ex_param_str = event_ex_param_str,
+                                       minfr_goodchannels = 0.01,
+                                       ThPre = 5,
+                                       Th = '[9 2]'
                                        )   
+                                       
 
         # copy json file to data directory as record of the input parameters (and gfix edit rates)  
         shutil.copy(input_json, os.path.join(data_directory, session_id + '-input.json'))
