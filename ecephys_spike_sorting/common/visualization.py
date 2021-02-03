@@ -48,7 +48,7 @@ def plotKsTemplates(ks_directory, raw_data_file, sample_rate = 30000, bit_volts 
                     include_pcs = True)
 
     raw_data = np.memmap(raw_data_file, dtype='int16')
-    data = np.reshape(raw_data, (int(raw_data.size / 384), 384))
+    data = np.reshape(raw_data, (int(raw_data.size / 385), 385))
 
     if fig is None:
         fig = plt.figure(figsize=(16,10))
@@ -80,7 +80,8 @@ def plotKsTemplates(ks_directory, raw_data_file, sample_rate = 30000, bit_volts 
         if (time < Z.shape[0] - 42 and time > 40):
             template = np.squeeze(templates[spike_templates[spikes_to_use[idx]],:,:])
             Z[int(time-40):int(time-40+61),:] += template * amplitudes[spikes_to_use[idx]]
-    
+    #import pdb
+    #pdb.set_trace()
     ax = plt.subplot(211)
 
     ax.imshow(D[:,1::2].T,
@@ -90,18 +91,19 @@ def plotKsTemplates(ks_directory, raw_data_file, sample_rate = 30000, bit_volts 
                origin='lower',
                cmap='RdGy')
 
-    ax.axis('off')
+    #ax.axis('off')
 
     ax = plt.subplot(212)
 
     ax.imshow(Z[:,1::2].T,
-               vmin=-400,
-               vmax=400,
+               vmin=-40,
+               vmax=40,
                aspect='auto',
                origin='lower',
                cmap='RdGy')
 
-    ax.axis('off')
+    #ax.axis('off')
+    plt.show()
 
     if output_path is not None:
         plt.savefig(output_path)
