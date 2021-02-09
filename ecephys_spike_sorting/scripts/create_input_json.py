@@ -62,21 +62,21 @@ def createInputJson(output_file,
                     ):
 
     # hard coded paths to code on your computer and system
-    ecephys_directory = r'D:\ecephys_fork\ecephys_spike_sorting\ecephys_spike_sorting'
+    ecephys_directory = r'C:\Users\giocomolab\ecephys_spike_sorting\ecephys_spike_sorting'
     
     # location of kilosor respository and KS2 version
     #kilosort_repository = r'C:\Users\labadmin\Documents\jic\KS20_release'
-    kilosort_repository = r'C:\Users\labadmin\Documents\jic\KS2_MP_111720\Kilosort'
+    kilosort_repository = r'C:\code\Kilosort2.5'
     KS2ver = '2.5'      # must equal either '2.5' or '2.0', and match the kiilosort_repository
     
-    npy_matlab_repository = r'C:\Users\labadmin\Documents\jic\npy-matlab-master'
-    catGTPath = r'C:\Users\labadmin\Documents\jic\CatGT-win'
-    tPrime_path=r'C:\Users\labadmin\Documents\jic\TPrime-win'
-    cWaves_path=r'C:\Users\labadmin\Documents\jic\C_Waves-win'
+    npy_matlab_repository = r'C:\code\npy-matlab'
+    catGTPath = r'C:\Users\giocomolab\Desktop\SpikeGLX\CatGT-win' #-win contains most current version
+    tPrime_path=r'C:\Users\giocomolab\Desktop\SpikeGLX\TPrime'
+    cWaves_path=r'C:\Users\giocomolab\Desktop\SpikeGLX\C_Waves-win'
     
      
     # for config files and kilosort working space
-    kilosort_output_tmp = r'D:\kilosort_datatemp' 
+    kilosort_output_tmp = r'C:\temp' 
     
     
     # derived directory names
