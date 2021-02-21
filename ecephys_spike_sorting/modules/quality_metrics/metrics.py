@@ -77,16 +77,16 @@ def calculate_metrics(spike_times, spike_clusters, amplitudes, channel_map, chan
         print("Calculating amplitude cutoff")
         amplitude_cutoff = calculate_amplitude_cutoff(spike_clusters[in_epoch], amplitudes[in_epoch], total_units)
         
-        print("Calculating PC-based metrics")
-        isolation_distance, l_ratio, d_prime, nn_hit_rate, nn_miss_rate = calculate_pc_metrics(spike_clusters[in_epoch], 
-                                                                                                total_units,
-                                                                                                pc_features[in_epoch,:,:],
-                                                                                                pc_feature_ind,
-                                                                                                channel_pos,
-                                                                                                params['max_radius_um'],
-                                                                                                params['max_spikes_for_unit'],
-                                                                                                params['max_spikes_for_nn'],
-                                                                                                params['n_neighbors'])
+        # print("Calculating PC-based metrics")
+        # isolation_distance, l_ratio, d_prime, nn_hit_rate, nn_miss_rate = calculate_pc_metrics(spike_clusters[in_epoch], 
+        #                                                                                         total_units,
+        #                                                                                         pc_features[in_epoch,:,:],
+        #                                                                                         pc_feature_ind,
+        #                                                                                         channel_pos,
+        #                                                                                         params['max_radius_um'],
+        #                                                                                         params['max_spikes_for_unit'],
+        #                                                                                         params['max_spikes_for_nn'],
+        #                                                                                         params['n_neighbors'])
   
         print("Calculating silhouette score")
         nSpikes = spike_times[in_epoch].size
@@ -116,11 +116,11 @@ def calculate_metrics(spike_times, spike_clusters, amplitudes, channel_map, chan
                                 ('presence_ratio' , presence_ratio),
                                 ('isi_viol' , isi_viol),
                                 ('amplitude_cutoff' , amplitude_cutoff),
-                                ('isolation_distance' , isolation_distance),
-                                ('l_ratio' , l_ratio),
-                                ('d_prime' , d_prime),
-                                ('nn_hit_rate' , nn_hit_rate),
-                                ('nn_miss_rate' , nn_miss_rate),
+                                #('isolation_distance' , isolation_distance),
+                                #('l_ratio' , l_ratio),
+                                #('d_prime' , d_prime),
+                                #('nn_hit_rate' , nn_hit_rate),
+                                #('nn_miss_rate' , nn_miss_rate),
                                 ('silhouette_score', the_silhouette_score),
                                 ('max_drift', max_drift),
                                 ('cumulative_drift', cumulative_drift),
