@@ -58,7 +58,8 @@ def createInputJson(output_file,
                     ks_LTseed = 1,
                     ks_templateRadius_um = 163,
                     c_Waves_snr_um = 160,
-                    qm_isi_thresh = 1.5/1000
+                    qm_isi_thresh = 1.5/1000,
+                    cluster_group_file_name = 'classifier_cluster.txt'
                     ):
 
     # hard coded paths to code on your computer and system
@@ -76,7 +77,7 @@ def createInputJson(output_file,
     
      
     # for config files and kilosort working space
-    kilosort_output_tmp = r'C:\temp' 
+    kilosort_output_tmp = r'F:\temp' 
     
     
     # derived directory names
@@ -191,7 +192,7 @@ def createInputJson(output_file,
             "ap_band_file" : continuous_file,
             "lfp_band_file" : os.path.join(extracted_data_directory, 'continuous', 'Neuropix-' + acq_system + '-100.1', 'continuous.dat'),
             "reorder_lfp_channels" : True,
-            "cluster_group_file_name" : 'cluster_group.tsv'
+            "cluster_group_file_name" : 'classifier_cluster.txt'
         }, 
 
         "extract_from_npx_params" : {
