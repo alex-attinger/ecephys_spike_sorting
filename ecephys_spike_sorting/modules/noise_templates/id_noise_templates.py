@@ -45,6 +45,12 @@ def id_noise_templates_rf(spike_times, spike_clusters, cluster_ids, templates, p
     classifier = pickle.load(open(classifier_path, 'rb'))
 
     feature_matrix = np.zeros((cluster_ids.size, 61, 32))
+    n_cluster = max(cluster_ids)+1
+    n_templates = templates.shape[0]
+    if n_cluster>n_templates:
+        print('extending templates')
+        dd=n_cluster-n_templates
+        templates = np.concatenate((templates,np.zeros((dd,templates.shape[1],templates.shape[2]))))
 
     peak_channels = np.squeeze(np.argmax(np.max(templates,1) - np.min(templates,1),1))
 
@@ -66,8 +72,15 @@ def id_noise_templates_rf(spike_times, spike_clusters, cluster_ids, templates, p
 
     feature_matrix = np.reshape(feature_matrix[:,:,:], (feature_matrix.shape[0], feature_matrix.shape[1] * feature_matrix.shape[2]), 2)
     feature_matrix = feature_matrix[:,::4]
-
-    is_noise = classifier.predict(feature_matrix)
+   
+    try:
+        is_noise = classifier.predict(feature_matrix)
+    except:
+        fm = feature_matrix
+        fm[np.isnan(fm)]=0
+        idx = np.where(np.isnan(feature_matrix[:,0]))
+        is_noise = classifier.predict(fm)
+        is_noise[idx]=1
     is_noise = is_noise.astype('bool')
 
     return cluster_ids, is_noise
@@ -91,6 +104,12 @@ def id_noise_templates(cluster_ids, templates, channel_map, params):
     is_noise : boolean array, True at index of noise templates
 
     """
+    n_cluster = max(cluster_ids)+1
+    n_templates = templates.shape[0]
+    if n_cluster>n_templates:
+        print('extending templates')
+        dd=n_cluster-n_templates
+        templates = np.concatenate((templates,np.zeros((dd,templates.shape[1],templates.shape[2]))))
 
     is_noise = np.zeros((templates.shape[0],),dtype='bool')
 
@@ -103,7 +122,6 @@ def id_noise_templates(cluster_ids, templates, channel_map, params):
     is_noise += check_template_temporal_peaks(templates, channel_map, params)
     print(' Total noise templates: ' + str(np.sum(is_noise)))
     #print(cluster_ids[np.where(is_noise)[0]])
-
     print('Checking spatial peaks...')
     is_noise += check_template_spatial_peaks(templates, channel_map, params)
     print(' Total noise templates: ' + str(np.sum(is_noise)))
