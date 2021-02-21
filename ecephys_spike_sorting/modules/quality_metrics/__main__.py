@@ -28,6 +28,18 @@ def calculate_quality_metrics(args):
                     args['ephys_params']['sample_rate'], \
                     use_master_clock = False,
                     include_pcs = True)
+        nTemplates = templates.shape[0]
+        nClu = max(spike_clusters)+1
+        if nClu>nTemplates:
+            # import pdb
+            # pdb.set_trace()
+            valid_idx = spike_clusters<nTemplates
+            spike_clusters = spike_clusters[valid_idx]
+            spike_times = spike_times[valid_idx]
+            amplitudes = amplitudes[valid_idx]
+            pc_features = pc_features[valid_idx]
+             
+  
 
         metrics = calculate_metrics(spike_times, spike_clusters, amplitudes, channel_map, channel_pos, pc_features, pc_feature_ind, args['quality_metrics_params'])
 
