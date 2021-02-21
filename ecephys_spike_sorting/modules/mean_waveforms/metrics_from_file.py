@@ -87,11 +87,23 @@ def metrics_from_file(mean_waveform_fullpath,
     snr_array = np.load(snr_fullpath)
 
     channel_map = np.squeeze(channel_map)
+    nTemplate = templates.shape[0]
+
+    
+    if total_units>nTemplate:
+        print('extending templates')
+        dd=total_units-nTemplate
+        templates = np.concatenate((templates,np.zeros((dd,templates.shape[1],templates.shape[2]))))
+        mean_waveforms = np.concatenate((mean_waveforms,np.zeros((dd,mean_waveforms.shape[1],mean_waveforms.shape[2]))))
+        snr_array = np.concatenate((snr_array,np.zeros((dd,snr_array.shape[1]))))
+
     
     nTemplate = templates.shape[0]
-    
+
     # initialize peak_channels array
     peak_channels = np.zeros([nTemplate,],'uint32')
+    # import pdb
+    # pdb.set_trace()
     # for each template (nt x nchan), multiply the the transpose (nchan x nt) by inverse of 
     # the whitening matrix (nchan x nchan); get max and min along tthe time axis (1)
     # to find the peak channel
