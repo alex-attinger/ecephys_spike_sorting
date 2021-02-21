@@ -21,23 +21,31 @@ def classify_noise_templates(args):
             load_kilosort_data(args['directories']['kilosort_output_directory'], \
                 args['ephys_params']['sample_rate'], \
                 convert_to_seconds = True)
-
-    if args['noise_waveform_params']['use_random_forest']:
+    #import pdb
+    #pdb.set_trace()
+    #if args['noise_waveform_params']['use_random_forest']:
         # use random forest classifier
-        cluster_ids, is_noise = id_noise_templates_rf(spike_times, spike_clusters, \
-                    cluster_ids, templates, args['noise_waveform_params'])
-    else:
+    cluster_ids, is_noise = id_noise_templates_rf(spike_times, spike_clusters, \
+                cluster_ids, templates, args['noise_waveform_params'])
+    #else:
         # use heuristics to identify templates that look like noise
-        cluster_ids, is_noise = id_noise_templates(cluster_ids, templates, np.squeeze(channel_map), \
-            args['noise_waveform_params'])
+    cluster_ids_heuristic, is_noise_heuristic = id_noise_templates(cluster_ids, templates, np.squeeze(channel_map), \
+        args['noise_waveform_params'])
 
     mapping = {False: 'good', True: 'noise'}
     labels = [mapping[value] for value in is_noise]
+    labels_heuristic = [mapping[value] for value in is_noise_heuristic]
 
     write_cluster_group_tsv(cluster_ids, 
                             labels, 
                             args['directories']['kilosort_output_directory'], 
                             args['ephys_params']['cluster_group_file_name'])
+    write_cluster_group_tsv(cluster_ids_heuristic, 
+                            labels_heuristic, 
+                            args['directories']['kilosort_output_directory'], 
+                            'heuristic_cluster.txt')
+    
+
     
     execution_time = time.time() - start
 
